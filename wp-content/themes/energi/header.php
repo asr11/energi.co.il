@@ -38,11 +38,11 @@
         </li>
 
         <li class="has-dropdown">
-          <a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">רכבים חשמליים <span class="arrow">▾</span></a>
+          <a href="<?php echo esc_url(home_url('/c/electric-vehicles/')); ?>">רכבים חשמליים <span class="arrow">▾</span></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo esc_url(home_url('/ev-savings-calculator/')); ?>">🚗 מחשבון חיסכון ברכב חשמלי</a></li>
-            <li><a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">🔌 עמדות טעינה ביתיות</a></li>
-            <li><a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">⚡ עמדות טעינה מהירות DC</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/electric-vehicles/')); ?>">🔌 עמדות טעינה ביתיות</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/electric-vehicles/')); ?>">⚡ עמדות טעינה מהירות DC</a></li>
           </ul>
         </li>
 
@@ -50,7 +50,7 @@
           <a href="<?php echo esc_url(home_url('/c/renewable-energy/')); ?>">אנרגיה מתחדשת <span class="arrow">▾</span></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo esc_url(home_url('/c/renewable-energy/')); ?>">🔋 מערכות אגירת חשמל</a></li>
-            <li><a href="<?php echo esc_url(home_url('/c/green-tech/')); ?>">🌱 טכנולוגיות ירוקות</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/green-technologies/')); ?>">🌱 טכנולוגיות ירוקות</a></li>
             <li><a href="<?php echo esc_url(home_url('/c/energy-saving/')); ?>">💡 ייעוץ חיסכון בחשמל</a></li>
           </ul>
         </li>
