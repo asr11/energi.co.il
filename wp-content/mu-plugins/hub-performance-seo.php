@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: HUB Global 2026 AEO / SEO / GEO Engine
- * Description: Global automated 200+ AEO/SEO parameters, Schema.org JSON-LD, OpenGraph, Canonical URLs, and BreadcrumbList across ALL pages.
- * Version: 2.0.0
+ * Description: Global automated 200+ AEO/SEO parameters, Schema.org JSON-LD, OpenGraph, Canonical URLs, and fallback page redirects.
+ * Version: 2.1.0
  * Author: HUB Advanced Systems
  */
 
@@ -10,7 +10,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// 1. Enforce Canonical URL, Meta Tags & OpenGraph Globals Across ALL Pages
+// 1. Fallback Redirects: Fix /c/page-slug 404s by redirecting to /page-slug/
+add_action('template_redirect', function() {
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+    
+    if (preg_match('#^/c/(installers-index|privacy-policy|blog|accessibility|solar-roi-calculator|ev-savings-calculator)/?#i', $request_uri, $matches)) {
+        $page_slug = $matches[1];
+        wp_redirect(home_url('/' . $page_slug . '/'), 301);
+        exit;
+    }
+});
+
+// 2. Enforce Canonical URL, Meta Tags & OpenGraph Globals Across ALL Pages
 add_action('wp_head', function() {
     global $post;
 
@@ -38,7 +49,7 @@ add_action('wp_head', function() {
     echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '" />' . "\n";
     echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
 
-    // 2. Dynamic Schema.org JSON-LD (AEO & GEO 2026 Engine)
+    // Dynamic Schema.org JSON-LD (AEO & GEO 2026 Engine)
     $schema_graph = [];
 
     // Organization Schema
