@@ -1,126 +1,156 @@
 /*
-
 Theme Name: אנרגי - energi
 Theme URI: https://www.energi.co.il/
-Version: 1
+Version: 1.1
 Author: hub
-Author URI: https://www.energi.co.il/
-Description: עבור פורטל האנרגיה הגדול בישראל
-Tags: אנרגיה, אנרגיה ירוקה, אנרגיה מתחדשת, אנרגיה סולרית
 Text Domain: energi
-
 */
 
 body {
-direction : rtl;
-font-family : sans-serif;
+  direction : rtl;
+  font-family : 'Assistant', 'Rubik', sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
+#inner {
+  width : 1200px;
+  max-width: 95%;
+  margin: 0 auto;
+  text-align : right;
+}
+
 header {
-min-height : 100px;
+  min-height : 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 2px solid #EEEEEE;
+  margin-bottom: 20px;
 }
+
+/* Logo Styling - Expert 12 Panel Standards */
+header a img,
+header img {
+  height: 75px !important;
+  max-height: 85px !important;
+  width: auto !important;
+  display: block;
+  object-fit: contain;
+}
+
 a {
-color : #1660a8;
-text-decoration : none;
+  color : #1660a8;
+  text-decoration : none;
 }
+
 label.screen-reader-text {
-display : none;
+  display : none;
 }
-#inner {
-width : 980px;
-text-align : right;
-}
+
 #contentarea {
-border-top : 2px solid #CCCCCC;
-overflow : hidden;
+  border-top : 2px solid #CCCCCC;
+  overflow : hidden;
 }
+
 #maincontent {
-float : right;
-width : 70%;
+  float : right;
+  width : 70%;
 }
+
 div#bizlinkcon {
-    background: aliceblue;
+  background: aliceblue;
 }
+
 h1.biz-title {
-background-color : #00640030;
-font-size : 20px;
-text-align : center;
+  background-color : #00640030;
+  font-size : 20px;
+  text-align : center;
 }
+
 div#maincontent h2 {
-font-size : 16px;
+  font-size : 16px;
 }
+
 #sidebar {
-float : right;
-width : 30%;
-padding-bottom : 100%;
-margin-bottom : -100%;
-background-color : #DDDDDD;
+  float : right;
+  width : 30%;
+  padding-bottom : 100%;
+  margin-bottom : -100%;
+  background-color : #DDDDDD;
 }
+
 div#sidebar h2 {
-text-align : center;
-font-size : 20px;
+  text-align : center;
+  font-size : 20px;
 }
+
 #footer {
-clear : both;
-padding : 2px;
-color : white;
-background-color : #000000;
-text-align : center;
+  clear : both;
+  padding : 15px;
+  color : white;
+  background-color : #000000;
+  text-align : center;
 }
+
 div#footer a {
-    color: white;
+  color: white;
 }
+
 div#mobilemenu {
-    display: none;
+  display: none;
 }
+
 .text-contact-line {
-    text-align: center;
-    margin: 3px 0 3px 0;
-    padding: 5px 0 5px 0;
+  text-align: center;
+  margin: 3px 0 3px 0;
+  padding: 5px 0 5px 0;
 }
+
 @media only screen and (max-width:600px) {
-	img {
+  img {
     max-width: 100%;
-}
-#inner {
-width : 100%;
-text-align : initial;
-}
-div#sidebar {
-display : none;
-}
-div#maincontent {
-width : 100%;
-font-size : 1em;
-margin : 0 auto;
-}
-h1.biz-title {
-font-size : 1em;
-}
-div#footer {
-font-size : 1em;
-}
-img.attachment-post-thumbnail.size-post-thumbnail.wp-post-image {
-max-width : 100%;
-height : auto;
-}
-div#mobilemenu {
+  }
+  #inner {
+    width : 100%;
+    text-align : initial;
+  }
+  div#sidebar {
+    display : none;
+  }
+  div#maincontent {
+    width : 100%;
+    font-size : 1em;
+    margin : 0 auto;
+  }
+  h1.biz-title {
+    font-size : 1em;
+  }
+  div#footer {
+    font-size : 1em;
+  }
+  img.attachment-post-thumbnail.size-post-thumbnail.wp-post-image {
+    max-width : 100%;
+    height : auto;
+  }
+  div#mobilemenu {
     display: block;
-}
-div#mobilemenu li {
+  }
+  div#mobilemenu li {
     text-align: center;
     list-style: none;
     background-color: #f7e700;
     margin: 3px 0 3px 0;
     padding: 5px 0 5px 0;
-}
-div#mobilemenu ul {
-padding : 0;
-}
-form#searchform {
+  }
+  div#mobilemenu ul {
+    padding : 0;
+  }
+  form#searchform {
     text-align: center;
-}
-header H1 {
+  }
+  header H1 {
     text-align: center;
-}
-
+  }
 }
