@@ -428,18 +428,55 @@ function energi_leads_dashboard_widget_content() {
 }
 
 // -------------------------------------------------------------
-// Shortcode: [energi_leads_manager] Form Renderer
+// Shortcode: [energi_leads_manager] Form Renderer & Handler
 // -------------------------------------------------------------
 add_shortcode('energi_leads_manager', 'energi_leads_manager_form_shortcode');
 
 function energi_leads_manager_form_shortcode($atts) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'energi_leads';
+    $message = '';
+
+    // Handle Frontend Form Submission
+    if (isset($_POST['energi_lead_submit'])) {
+        $full_name = sanitize_text_field($_POST['full_name']);
+        $phone = sanitize_text_field($_POST['phone']);
+        $city = sanitize_text_field($_POST['city']);
+        $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+        $privacy_consent = isset($_POST['privacy_consent']) ? 1 : 0;
+
+        if ($privacy_consent && !empty($full_name) && !empty($phone)) {
+            $inserted = $wpdb->insert(
+                $table_name,
+                array(
+                    'full_name' => $full_name,
+                    'phone' => $phone,
+                    'city' => $city,
+                    'email' => $email,
+                    'status' => 'new',
+                    'submission_date' => current_time('mysql'),
+                    'ip_address' => sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? '')
+                )
+            );
+            if ($inserted !== false) {
+                $message = '<div style="background: #d1fae5; color: #065f46; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; margin-bottom: 15px;">✅ פנייתך התקבלה בהצלחה! נציג יחזור אליך בהקדם.</div>';
+            }
+        } else if (!$privacy_consent) {
+            $message = '<div style="background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px;">⚠️ יש לאשר את תנאי מדיניות הפרטיות לפני השליחה.</div>';
+        }
+    }
+
     ob_start();
     ?>
     <div class="energi-lead-form-box" style="background: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 550px; margin: 20px auto; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: right; direction: rtl;">
         <h3 style="margin-top: 0; color: #0d3b66; font-size: 1.4rem; text-align: center;">לקבלת 3 הצעות מחיר ממתקינים מורשים</h3>
         <p style="text-align: center; color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">השאר פרטים ונחזור אליך עם חישוב חיסכון מדויק</p>
         
+        <?php echo $message; ?>
+
         <form action="" method="POST" id="energi-lead-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="hidden" name="energi_lead_submit" value="1">
+
             <div>
                 <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #1e293b;">שם מלא *</label>
                 <input type="text" name="full_name" required placeholder="ישראל ישראלי" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-family: inherit;" />
@@ -455,10 +492,16 @@ function energi_leads_manager_form_shortcode($atts) {
                 <input type="text" name="city" placeholder="תל אביב / תל מונד / חניאל" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-family: inherit;" />
             </div>
 
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                <input type="checkbox" name="privacy_consent" id="privacy_consent" value="1" required checked style="width: 18px; height: 18px; cursor: pointer;" />
+                <label for="privacy_consent" style="font-size: 0.85rem; color: #475569; cursor: pointer;">
+                    אני מאשר/ת את <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" target="_blank" style="color: #0d3b66; text-decoration: underline;">מדיניות הפרטיות ותקנון השירות</a> (תשע"ז-2017) *
+                </label>
+            </div>
+
             <button type="submit" style="background: #10b981; color: white; border: none; padding: 14px; font-size: 1.1rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: background 0.2s ease; margin-top: 10px;">
                 ⚡ שלח לקבלת 3 הצעות מחיר
             </button>
-            <p style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin: 0;">🔒 המידע נשמר מאובטח בהתאם לתקנות הגנת הפרטיות (תשע"ז-2017)</p>
         </form>
     </div>
     <?php
