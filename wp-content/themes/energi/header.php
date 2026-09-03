@@ -24,14 +24,44 @@
       </a>
     </div>
 
-    <!-- Center: Main Navigation Menu -->
+    <!-- Center: Main Navigation Menu with Sub-Categories & Blog -->
     <nav class="hub-main-nav">
       <ul class="hub-nav-list">
-        <li><a href="<?php echo esc_url(home_url('/c/solar-system/')); ?>">מערכת סולארית</a></li>
-        <li><a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">רכבים חשמליים</a></li>
-        <li><a href="<?php echo esc_url(home_url('/c/renewable-energy/')); ?>">אנרגיה מתחדשת</a></li>
-        <li><a href="<?php echo esc_url(home_url('/c/energy-saving/')); ?>">חיסכון באנרגיה</a></li>
-        <li><a href="<?php echo esc_url(home_url('/c/green-tech/')); ?>">טכנולוגיות ירוקות</a></li>
+        
+        <li class="has-dropdown">
+          <a href="<?php echo esc_url(home_url('/c/solar-system/')); ?>">מערכת סולארית <span class="arrow">▾</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?php echo esc_url(home_url('/solar-roi-calculator/')); ?>">⚡ מחשבון כדאיות סולארית</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/solar-system/')); ?>">🏠 התקנה סולארית לבית פרטי</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/solar-system/')); ?>">🏢 מערכות סולאריות מסחריות</a></li>
+          </ul>
+        </li>
+
+        <li class="has-dropdown">
+          <a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">רכבים חשמליים <span class="arrow">▾</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?php echo esc_url(home_url('/ev-savings-calculator/')); ?>">🚗 מחשבון חיסכון ברכב חשמלי</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">🔌 עמדות טעינה ביתיות</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/ev-charging/')); ?>">⚡ עמדות טעינה מהירות DC</a></li>
+          </ul>
+        </li>
+
+        <li class="has-dropdown">
+          <a href="<?php echo esc_url(home_url('/c/renewable-energy/')); ?>">אנרגיה מתחדשת <span class="arrow">▾</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?php echo esc_url(home_url('/c/renewable-energy/')); ?>">🔋 מערכות אגירת חשמל</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/green-tech/')); ?>">🌱 טכנולוגיות ירוקות</a></li>
+            <li><a href="<?php echo esc_url(home_url('/c/energy-saving/')); ?>">💡 ייעוץ חיסכון בחשמל</a></li>
+          </ul>
+        </li>
+
+        <li><a href="<?php echo esc_url(home_url('/c/installers-index/')); ?>">אינדקס מתקינים</a></li>
+
+        <!-- NEW: Blog Button -->
+        <li class="blog-btn-item">
+          <a href="<?php echo esc_url(home_url('/blog/')); ?>" class="hub-blog-link">📝 בלוג ומדריכים</a>
+        </li>
+
       </ul>
     </nav>
 
