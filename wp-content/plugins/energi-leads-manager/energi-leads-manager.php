@@ -426,4 +426,42 @@ function energi_leads_dashboard_widget_content() {
     echo '<a href="' . admin_url('admin.php?page=energi-leads') . '" class="button button-primary">נהל לידים</a>';
     echo '</p>';
 }
+
+// -------------------------------------------------------------
+// Shortcode: [energi_leads_manager] Form Renderer
+// -------------------------------------------------------------
+add_shortcode('energi_leads_manager', 'energi_leads_manager_form_shortcode');
+
+function energi_leads_manager_form_shortcode($atts) {
+    ob_start();
+    ?>
+    <div class="energi-lead-form-box" style="background: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 550px; margin: 20px auto; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: right; direction: rtl;">
+        <h3 style="margin-top: 0; color: #0d3b66; font-size: 1.4rem; text-align: center;">לקבלת 3 הצעות מחיר ממתקינים מורשים</h3>
+        <p style="text-align: center; color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">השאר פרטים ונחזור אליך עם חישוב חיסכון מדויק</p>
+        
+        <form action="" method="POST" id="energi-lead-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #1e293b;">שם מלא *</label>
+                <input type="text" name="full_name" required placeholder="ישראל ישראלי" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-family: inherit;" />
+            </div>
+            
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #1e293b;">מספר טלפון *</label>
+                <input type="tel" name="phone" required placeholder="050-0000000" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-family: inherit;" />
+            </div>
+
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #1e293b;">עיר / יישוב</label>
+                <input type="text" name="city" placeholder="תל אביב / תל מונד / חניאל" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-family: inherit;" />
+            </div>
+
+            <button type="submit" style="background: #10b981; color: white; border: none; padding: 14px; font-size: 1.1rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: background 0.2s ease; margin-top: 10px;">
+                ⚡ שלח לקבלת 3 הצעות מחיר
+            </button>
+            <p style="font-size: 0.8rem; color: #94a3b8; text-align: center; margin: 0;">🔒 המידע נשמר מאובטח בהתאם לתקנות הגנת הפרטיות (תשע"ז-2017)</p>
+        </form>
+    </div>
+    <?php
+    return ob_get_clean();
+}
 ?>

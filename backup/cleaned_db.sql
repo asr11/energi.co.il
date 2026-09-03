@@ -206,7 +206,7 @@ CREATE TABLE `wpw4_options` (
   PRIMARY KEY (`option_id`),
   UNIQUE KEY `option_name` (`option_name`),
   KEY `autoload` (`autoload`)
-) ENGINE=InnoDB AUTO_INCREMENT=147050 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=147051 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +248,7 @@ INSERT INTO `wpw4_options` VALUES
 (30,'hack_file','0','yes'),
 (31,'blog_charset','UTF-8','yes'),
 (32,'moderation_keys','','no'),
-(33,'active_plugins','a:7:{i:1;s:31:\"code-snippets/code-snippets.php\";i:2;s:45:\"energi-leads-manager/energi-leads-manager.php\";i:3;s:35:\"google-site-kit/google-site-kit.php\";i:4;s:35:\"insert-headers-and-footers/ihaf.php\";i:5;s:41:\"pojo-accessibility/pojo-accessibility.php\";i:6;s:24:\"wordpress-seo/wp-seo.php\";i:7;s:39:\"wp-file-manager/file_folder_manager.php\";}','yes'),
+(33,'active_plugins','a:7:{i:0;s:31:\"code-snippets/code-snippets.php\";i:1;s:45:\"energi-leads-manager/energi-leads-manager.php\";i:2;s:35:\"google-site-kit/google-site-kit.php\";i:3;s:35:\"insert-headers-and-footers/ihaf.php\";i:4;s:41:\"pojo-accessibility/pojo-accessibility.php\";i:5;s:24:\"wordpress-seo/wp-seo.php\";i:6;s:39:\"wp-file-manager/file_folder_manager.php\";}','auto'),
 (34,'category_base','/c','yes'),
 (35,'ping_sites','https://rpc.pingomatic.com/','yes'),
 (36,'comment_max_links','2','yes'),
@@ -430,9 +430,9 @@ INSERT INTO `wpw4_options` VALUES
 (134403,'ihaf_insert_body','','auto'),
 (139961,'code_snippets_version','3.9.6','auto'),
 (140338,'code_snippets_settings','a:4:{s:7:\"general\";a:9:{s:19:\"activate_by_default\";b:1;s:11:\"enable_tags\";b:1;s:18:\"enable_description\";b:1;s:18:\"visual_editor_rows\";i:5;s:10:\"list_order\";s:12:\"priority-asc\";s:13:\"disable_prism\";b:0;s:17:\"hide_upgrade_menu\";b:0;s:18:\"complete_uninstall\";b:0;s:17:\"enable_flat_files\";b:0;}s:6:\"editor\";a:12:{s:16:\"indent_with_tabs\";b:1;s:8:\"tab_size\";i:4;s:11:\"indent_unit\";i:4;s:9:\"font_size\";i:14;s:10:\"wrap_lines\";b:1;s:12:\"code_folding\";b:1;s:12:\"line_numbers\";b:1;s:19:\"auto_close_brackets\";b:1;s:27:\"highlight_selection_matches\";b:1;s:21:\"highlight_active_line\";b:1;s:6:\"keymap\";s:7:\"default\";s:5:\"theme\";s:7:\"default\";}s:14:\"version-switch\";a:1:{s:16:\"selected_version\";s:0:\"\";}s:5:\"debug\";a:1:{s:21:\"enable_version_change\";b:0;}}','auto'),
-(147045,'_site_transient_timeout_wp_theme_files_patterns-87058c73d45712a0e553563b351bd4c3','1788430053','off'),
-(147046,'_site_transient_wp_theme_files_patterns-87058c73d45712a0e553563b351bd4c3','a:2:{s:7:\"version\";s:5:\"2.0.0\";s:8:\"patterns\";a:0:{}}','off'),
-(147047,'_transient_doing_cron','1788428254.0000410079956054687500','on'),
+(147045,'_site_transient_timeout_wp_theme_files_patterns-87058c73d45712a0e553563b351bd4c3','1788430337','off'),
+(147046,'_site_transient_wp_theme_files_patterns-87058c73d45712a0e553563b351bd4c3','a:2:{s:7:\"version\";s:1:\"1\";s:8:\"patterns\";a:0:{}}','off'),
+(147047,'_transient_doing_cron','1788428628.9813630580902099609375','on'),
 (147048,'_transient_googlesitekit_verification_meta_tags','a:0:{}','on'),
 (147049,'_transient_wp_styles_for_blocks','a:2:{s:4:\"hash\";s:32:\"d63977f4235669c262f5074d7466cdce\";s:6:\"blocks\";a:9:{s:32:\"832dc2d864d79097d8b8b493ad93453b\";s:0:\"\";s:32:\"45d3e0c4afcbd8cf25cb1ba51abfb3d7\";s:46:\":root :where(.wp-block-icon svg){width: 24px;}\";s:32:\"feca6e996f694be2d29599793228e0d7\";s:0:\"\";s:32:\"5eef131663eddaf830554df656fc2968\";s:324:\":where(.wp-block-gallery.is-layout-flex){gap: var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}:where(.wp-block-gallery.is-layout-grid){gap: var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}\";s:32:\"c99c05932c6685777ec5b856698fcc7d\";s:118:\":where(.wp-block-latest-posts.is-layout-flex){gap: 1.25em;}:where(.wp-block-latest-posts.is-layout-grid){gap: 1.25em;}\";s:32:\"dec8d648f30b13caec8e61374591787d\";s:120:\":where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}\";s:32:\"6c35533f7a92cce94808323603db9fc8\";s:120:\":where(.wp-block-term-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-term-template.is-layout-grid){gap: 1.25em;}\";s:32:\"6a0505cd5c78a87ed77570cda43c1132\";s:102:\":where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}\";s:32:\"25a66f156386551185570f72a9f7d44e\";s:69:\":root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}\";}}','on');
 /*!40000 ALTER TABLE `wpw4_options` ENABLE KEYS */;
@@ -2397,4 +2397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-03  9:38:34
+-- Dump completed on 2026-09-03  9:44:24
