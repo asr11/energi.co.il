@@ -1,0 +1,15 @@
+# Logs
+*.log
+docker_data/
+db_data/
+
+# Cache
+wp-content/cache/
+wp-content/wph-logs/
+
+# Raw full DB backup (keep cleaned DB)
+backup/original_db.sql
+
+# OS Files
+.DS_Store
+Thumbs.db
