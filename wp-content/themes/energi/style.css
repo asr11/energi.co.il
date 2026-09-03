@@ -49,17 +49,17 @@ body {
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .hub-header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 20px;
+  padding: 1px 20px;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 15px;
+  gap: 12px;
 }
 
 /* 1. Brand Logo (Far Right) */
@@ -75,8 +75,8 @@ body {
 }
 
 .hub-main-logo {
-  height: 80px !important;
-  max-height: 90px !important;
+  height: 60px !important;
+  max-height: 68px !important;
   width: auto !important;
   display: block;
   object-fit: contain;
