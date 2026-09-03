@@ -7,6 +7,7 @@
 <div id="footer">
   © <?php echo date('Y'); ?> <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo('name'); ?></a> כל הזכויות שמורות לאתר.
   | <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>" style="color: #38bdf8; text-decoration: underline;">🔒 מדיניות פרטיות ותקנון (תשע"ז-2017)</a>
+  | <a href="javascript:void(0)" onclick="if(window.openEnergiPrivacyCenter) window.openEnergiPrivacyCenter()" style="color: #38bdf8; text-decoration: underline;">⚙️ ניהול העדפות פרטיות</a>
   | <a href="<?php echo esc_url(home_url('/accessibility/')); ?>" style="color: #38bdf8; text-decoration: underline;">♿ הצהרת נגישות</a>
 </div>
 <p style="font-size: 0.85rem; line-height: 1.6; max-width: 1000px; margin: 15px auto; color: #94a3b8; text-align: center;">
