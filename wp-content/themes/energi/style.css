@@ -1,108 +1,225 @@
 /*
 Theme Name: אנרגי - energi Pro 2026
 Theme URI: https://www.energi.co.il/
-Version: 2.1
+Version: 2.5
 Author: hub
 Text Domain: energi
 */
 
+:root {
+  --primary-navy: #0d3b66;
+  --energy-green: #10b981;
+  --green-hover: #059669;
+  --bg-light: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --radius: 12px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+}
+
 body {
-  direction : rtl;
-  font-family : 'Assistant', 'Rubik', system-ui, sans-serif;
+  direction: rtl;
+  font-family: 'Assistant', 'Rubik', system-ui, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f8fafc;
-  color: #1e293b;
+  background-color: var(--bg-light);
+  color: var(--text-main);
+  line-height: 1.7;
 }
 
 #inner {
-  width : 1200px;
+  width: 1400px;
   max-width: 95%;
   margin: 0 auto;
-  text-align : right;
+  text-align: right;
 }
 
-/* 1. Sticky Glassmorphic Header */
-header {
+/* =========================================================
+   2026 HEADER ARCHITECTURE (RTL: Logo Right | Menu Center | Search Left)
+   ========================================================= */
+.hub-header-2026 {
   position: sticky;
   top: 0;
-  z-index: 999;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  min-height : 85px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 30px;
+}
+
+.hub-header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 25px;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
-  margin-bottom: 25px;
-  border-radius: 0 0 16px 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
 }
 
-/* Logo Styling - Expert 12 Panel Standards */
-header a img,
-header img {
-  height: 75px !important;
-  max-height: 85px !important;
+/* 1. Brand Logo (Far Right) */
+.hub-brand-logo-area {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.hub-logo-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.hub-main-logo {
+  height: 68px !important;
+  max-height: 78px !important;
   width: auto !important;
   display: block;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
 
-header a img:hover {
+.hub-main-logo:hover {
   transform: scale(1.03);
 }
 
-/* 2. Micro-Interactions & Bento Cards */
-#maincontent {
-  float : right;
-  width : 68%;
+/* 2. Navigation Menu (Center) */
+.hub-main-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hub-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.hub-nav-list li a {
+  color: var(--primary-navy);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.hub-nav-list li a:hover {
+  color: var(--energy-green);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+/* 3. Search Bar Area (Far Left) */
+.hub-search-area {
+  flex-shrink: 0;
+}
+
+.hub-search-area form,
+.hub-search-area form#searchform {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  padding: 4px 6px 4px 14px;
+  transition: all 0.2s ease;
+}
+
+.hub-search-area form:focus-within {
+  border-color: var(--energy-green);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
   background: #ffffff;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e2e8f0;
 }
 
-#sidebar {
-  float : right;
-  width : 28%;
-  margin-right: 4%;
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e2e8f0;
+.hub-search-area input[type="text"],
+.hub-search-area input[type="search"] {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  color: var(--text-main);
+  width: 180px;
 }
 
-a {
-  color : #0d3b66;
-  text-decoration : none;
-  transition: color 0.2s ease;
+.hub-search-area input[type="submit"],
+.hub-search-area button {
+  background: var(--energy-green);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
-a:hover {
-  color: #10b981;
+.hub-search-area input[type="submit"]:hover,
+.hub-search-area button:hover {
+  background: var(--green-hover);
+  transform: translateY(-1px);
 }
 
-label.screen-reader-text {
-  display : none;
-}
-
+/* =========================================================
+   CONTENT & SIDEBAR LAYOUT
+   ========================================================= */
 #contentarea {
-  overflow : hidden;
+  display: flex;
+  gap: 30px;
   margin-bottom: 40px;
 }
 
-/* 3. Footer Styling */
+#maincontent {
+  flex: 1;
+  background: var(--card-bg);
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+#sidebar {
+  width: 320px;
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  height: fit-content;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rubik', sans-serif;
+  color: var(--primary-navy);
+  margin-top: 0;
+}
+
+a {
+  color: var(--primary-navy);
+  text-decoration: none;
+}
+
+/* Footer Styling */
 #footer {
-  clear : both;
-  padding : 25px;
-  color : #cbd5e1;
-  background-color : #0f172a;
-  text-align : center;
+  clear: both;
+  padding: 30px;
+  color: #cbd5e1;
+  background-color: #0f172a;
+  text-align: center;
   border-radius: 16px 16px 0 0;
   font-size: 0.95rem;
 }
@@ -115,17 +232,21 @@ div#mobilemenu {
   display: none;
 }
 
-.text-contact-line {
-  text-align: center;
-  margin: 3px 0 3px 0;
-  padding: 5px 0 5px 0;
-}
-
-@media only screen and (max-width:900px) {
-  #maincontent, #sidebar {
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hub-header-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .hub-nav-list {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+  #contentarea {
+    flex-direction: column;
+  }
+  #sidebar {
     width: 100%;
-    float: none;
-    margin-right: 0;
-    margin-bottom: 20px;
   }
 }
