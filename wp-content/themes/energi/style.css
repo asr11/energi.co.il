@@ -75,8 +75,8 @@ body {
 }
 
 .hub-main-logo {
-  height: 68px !important;
-  max-height: 78px !important;
+  height: 110px !important;
+  max-height: 125px !important;
   width: auto !important;
   display: block;
   object-fit: contain;
