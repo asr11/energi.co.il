@@ -55,7 +55,7 @@
           </ul>
         </li>
 
-        <li><a href="<?php echo esc_url(home_url('/c/installers-index/')); ?>">אינדקס מתקינים</a></li>
+        <li><a href="<?php echo esc_url(home_url('/installers-index/')); ?>">אינדקס מתקינים</a></li>
 
         <!-- NEW: Blog Button -->
         <li class="blog-btn-item">
