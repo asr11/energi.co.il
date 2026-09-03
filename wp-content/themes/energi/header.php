@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>">
+<link rel="icon" href="<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png" type="image/png">
+<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png" type="image/png">
 <?php wp_head(); ?>	
 </head>
 <body <?php body_class(); ?>>
