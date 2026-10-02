@@ -31,6 +31,7 @@ add_action('wp_footer', function() {
       </a>
     </div>
     <style>
+      #pojo-a11y-toolbar { z-index: 100000 !important; }
       @media (max-width: 600px) {
         #hub-floating-lead-bar {
           padding: 10px 14px;
@@ -40,3 +41,4 @@ add_action('wp_footer', function() {
     </style>
     <?php
 });
+

@@ -507,4 +507,82 @@ function energi_leads_manager_form_shortcode($atts) {
     <?php
     return ob_get_clean();
 }
+
+// --- DB Indexing Upgrade ---
+function energi_leads_upgrade_indices() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'energi_leads';
+    $indices = $wpdb->get_results("SHOW INDEX FROM $table_name");
+    if (is_array($indices)) {
+        $keys = array_map(function($idx) { return $idx->Key_name; }, $indices);
+        if (!in_array('idx_status', $keys)) {
+            $wpdb->query("ALTER TABLE $table_name ADD INDEX idx_status (status)");
+        }
+        if (!in_array('idx_submission_date', $keys)) {
+            $wpdb->query("ALTER TABLE $table_name ADD INDEX idx_submission_date (submission_date)");
+        }
+        if (!in_array('idx_phone', $keys)) {
+            $wpdb->query("ALTER TABLE $table_name ADD INDEX idx_phone (phone)");
+        }
+    }
+}
+add_action('plugins_loaded', 'energi_leads_upgrade_indices');
+
+// --- REST API Endpoint (0ms AJAX Lead Capture) ---
+add_action('rest_api_init', function () {
+    register_rest_route('energi/v1', '/submit-lead', array(
+        'methods' => 'POST',
+        'callback' => 'energi_handle_rest_submit_lead',
+        'permission_callback' => '__return_true',
+    ));
+});
+
+function energi_handle_rest_submit_lead($request) {
+    global $wpdb;
+    $params = $request->get_params();
+
+    // 1. Honeypot Anti-Bot Check
+    if (!empty($params['hp_check'])) {
+        return new WP_REST_Response(array('success' => true, 'message' => 'OK'), 200);
+    }
+
+    // 2. Rate Limiting (5 requests per 300s per IP)
+    $ip = sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+    $transient_key = 'energi_rl_' . md5($ip);
+    $attempts = (int) get_transient($transient_key);
+    if ($attempts >= 5) {
+        return new WP_REST_Response(array('success' => false, 'error' => 'Too many requests'), 429);
+    }
+    set_transient($transient_key, $attempts + 1, 300);
+
+    // 3. Sanitization & Validation
+    $full_name = sanitize_text_field($params['full_name'] ?? '');
+    $phone = sanitize_text_field($params['phone'] ?? '');
+    $city = sanitize_text_field($params['city'] ?? '');
+    $email = sanitize_email($params['email'] ?? '');
+    $privacy = !empty($params['privacy_consent']);
+
+    if (empty($full_name) || empty($phone) || !$privacy) {
+        return new WP_REST_Response(array('success' => false, 'error' => 'Missing required fields'), 400);
+    }
+
+    // 4. Fast DB Insert
+    $table_name = $wpdb->prefix . 'energi_leads';
+    $inserted = $wpdb->insert($table_name, array(
+        'full_name' => $full_name,
+        'phone' => $phone,
+        'city' => $city,
+        'email' => $email,
+        'status' => 'new',
+        'submission_date' => current_time('mysql'),
+        'ip_address' => $ip,
+        'user_agent' => sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? '')
+    ));
+
+    if ($inserted === false) {
+        return new WP_REST_Response(array('success' => false, 'error' => 'Database error'), 500);
+    }
+
+    return new WP_REST_Response(array('success' => true, 'lead_id' => $wpdb->insert_id), 200);
+}
 ?>
