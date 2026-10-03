@@ -340,19 +340,6 @@ function energi_leads_page() {
                                         <?php echo $name; ?>
                                     </span>
                                 </td>
-
-                                        'new' => 'חדש',
-                                        'contacted' => 'נוצר קשר',
-                                        'converted' => 'הומר',
-                                        'rejected' => 'נדחה'
-                                    );
-                                    $color = isset($status_colors[$lead->status]) ? $status_colors[$lead->status] : '#999';
-                                    $name = isset($status_names[$lead->status]) ? $status_names[$lead->status] : $lead->status;
-                                    ?>
-                                    <span style="background: <?php echo $color; ?>; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
-                                        <?php echo $name; ?>
-                                    </span>
-                                </td>
                                 <td>
                                     <div style="display: flex; gap: 5px;">
                                         <form method="POST" style="display: inline;">
