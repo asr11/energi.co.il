@@ -373,12 +373,12 @@ function energi_leads_page() {
         </div>
     </div>
     
-    <!-- Lead Details Modal -->
-    <div id="leadModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999999;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin: 0;">פרטי הליד</h2>
-                <button onclick="hideLeadDetails()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    <!-- Lead Details Modal 2027 -->
+    <div id="leadModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 999999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 25px; border-radius: 12px; max-width: 550px; width: 92%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 12px; margin-bottom: 15px;">
+                <h2 style="margin: 0; color: #0073aa; font-size: 1.4em; display: flex; align-items: center; gap: 8px;">📋 תיק ליד מלא – מסלול קליטה</h2>
+                <button onclick="hideLeadDetails()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
             </div>
             <div id="leadModalContent"></div>
         </div>
@@ -386,24 +386,61 @@ function energi_leads_page() {
     
     <script>
         function showLeadDetails(lead) {
-            const solutions = JSON.parse(lead.solutions || '[]');
-            const solutionsText = Array.isArray(solutions) ? solutions.join(', ') : '';
+            let solutionsText = 'לא צוין';
+            try {
+                const solutions = JSON.parse(lead.solutions || '[]');
+                if (Array.isArray(solutions) && solutions.length > 0) {
+                    const solutionMap = {
+                        'electric_vehicle': '🚗 רכב חשמלי',
+                        'solar': '☀️ סולארי',
+                        'battery': '🔋 אגירת אנרגיה',
+                        'heat_pump': '❄️ משאבת חום',
+                        'led_lighting': '💡 תאורת לדינג',
+                        'smart_home': '🏠 בית חכם'
+                    };
+                    solutionsText = solutions.map(s => solutionMap[s] || s).join(', ');
+                }
+            } catch(e) {}
             
+            // Clean phone for WhatsApp
+            const cleanPhone = (lead.phone || '').replace(/[^0-9]/g, '');
+            const waPhone = cleanPhone.startsWith('0') ? '972' + cleanPhone.substring(1) : cleanPhone;
+            
+            // Device detection from User Agent
+            let deviceType = '💻 מחשב (Desktop)';
+            if (/mobile|android|iphone|ipad/i.test(lead.user_agent || '')) {
+                deviceType = '📱 נייד (Mobile)';
+            }
+
             const content = `
-                <div style="line-height: 1.6;">
-                    <p><strong>שם מלא:</strong> ${lead.full_name}</p>
-                    <p><strong>טלפון:</strong> <a href="tel:${lead.phone}">${lead.phone}</a></p>
-                    <p><strong>אימייל:</strong> ${lead.email ? '<a href="mailto:' + lead.email + '">' + lead.email + '</a>' : 'לא צוין'}</p>
-                    <p><strong>סוג נכס:</strong> ${lead.property_type || 'לא צוין'}</p>
-                    <p><strong>גודל נכס:</strong> ${lead.property_size || 'לא צוין'} מ"ר</p>
-                    <p><strong>חשבון חודשי:</strong> ${lead.monthly_bill || 'לא צוין'}</p>
-                    <p><strong>עיר:</strong> ${lead.city || 'לא צוין'}</p>
-                    <p><strong>פתרונות מעניינים:</strong> ${solutionsText || 'לא צוין'}</p>
-                    <p><strong>חיסכון צפוי:</strong> <span style="color: #00a32a; font-weight: bold;">${lead.estimated_savings || 'לא חושב'}</span></p>
-                    <p><strong>זמן נוח לקשר:</strong> ${lead.contact_time || 'לא צוין'}</p>
-                    <p><strong>הערות:</strong> ${lead.notes || 'אין הערות'}</p>
-                    <p><strong>תאריך הגשה:</strong> ${new Date(lead.submission_date).toLocaleString('he-IL')}</p>
-                    <p><strong>כתובת IP:</strong> ${lead.ip_address || 'לא זמין'}</p>
+                <div style="font-size: 13px; line-height: 1.7; color: #333;">
+                    <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-right: 4px solid #0073aa;">
+                        <h4 style="margin: 0 0 6px 0; color: #0073aa;">👤 פרטי איש קשר:</h4>
+                        <div><strong>שם מלא:</strong> ${lead.full_name || 'לא צוין'}</div>
+                        <div><strong>טלפון:</strong> <a href="tel:${lead.phone}" style="color: #0073aa; font-weight: bold;">${lead.phone}</a> 
+                        ${waPhone ? `<a href="https://wa.me/${waPhone}" target="_blank" style="color: #25D366; margin-right: 8px; text-decoration: none;">💬 WhatsApp</a>` : ''}</div>
+                        <div><strong>אימייל:</strong> ${lead.email ? `<a href="mailto:${lead.email}">${lead.email}</a>` : 'לא צוין'}</div>
+                        <div><strong>עיר / יישוב:</strong> ${lead.city || 'לא צוין'}</div>
+                        <div><strong>זמן נוח להתקשרות:</strong> ${lead.contact_time || 'בכל עת'}</div>
+                    </div>
+
+                    <div style="background: #f0fdf4; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-right: 4px solid #00a32a;">
+                        <h4 style="margin: 0 0 6px 0; color: #00a32a;">📊 נתוני מחשבון ופתרונות:</h4>
+                        <div><strong>פתרונות מבוקשים:</strong> ${solutionsText}</div>
+                        <div><strong>סוג נכס:</strong> ${lead.property_type || 'לא צוין'}</div>
+                        <div><strong>גודל נכס/גג:</strong> ${lead.property_size ? lead.property_size + ' מ"ר' : 'לא צוין'}</div>
+                        <div><strong>חשבון חשמל חודשי:</strong> ${lead.monthly_bill || 'לא צוין'}</div>
+                        <div><strong>חיסכון משוער מחושב:</strong> <strong style="color: #00a32a; font-size: 1.1em;">${lead.estimated_savings || 'לא חושב'}</strong></div>
+                    </div>
+
+                    <div style="background: #fffbebf5; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-right: 4px solid #dba617;">
+                        <h4 style="margin: 0 0 6px 0; color: #b45309;">🌐 מסלול קליטה וטכנולוגיה (Journey Trace):</h4>
+                        <div><strong>תאריך ושעת קליטה:</strong> ${new Date(lead.submission_date).toLocaleString('he-IL')}</div>
+                        <div><strong>דף מקור / טופס:</strong> ${lead.notes && lead.notes.includes('http') ? lead.notes : 'טופס מחשבון (Bento AJAX Direct)'}</div>
+                        <div><strong>סוג מכשיר:</strong> ${deviceType}</div>
+                        <div><strong>כתובת IP:</strong> ${lead.ip_address || 'לא נרשמה'}</div>
+                        <div><strong>סטטוס נוכחי:</strong> <span style="font-weight: bold; background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">${lead.status || 'new'}</span></div>
+                    </div>
                 </div>
             `;
             
