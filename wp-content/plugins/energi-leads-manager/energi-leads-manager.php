@@ -56,16 +56,57 @@ function energi_leads_menu() {
         'dashicons-phone',
         30
     );
-    
-    add_submenu_page(
-        'energi-leads',
-        'ייצא לידים',
-        'ייצא לידים',
-        'manage_options',
-        'energi-leads-export',
-        'energi_leads_export_page'
-    );
 }
+
+// Direct CSV Export Action
+add_action('admin_init', function() {
+    if (isset($_GET['page']) && $_GET['page'] === 'energi-leads' && isset($_GET['action']) && $_GET['action'] === 'export_csv') {
+        if (!current_user_can('manage_options')) return;
+        
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'energi_leads';
+        $leads = $wpdb->get_results("SELECT * FROM $table_name ORDER BY submission_date DESC", ARRAY_A);
+        
+        if (!empty($leads)) {
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename=energi_leads_' . date('Y-m-d') . '.csv');
+            
+            $output = fopen('php://output', 'w');
+            fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM for Hebrew Excel
+            
+            fputcsv($output, array(
+                'תאריך', 'שם מלא', 'טלפון', 'אימייל', 'סוג נכס', 'פתרונות', 
+                'גודל נכס', 'חשבון חודשי', 'עיר', 'זמן קשר', 'הערות', 
+                'חיסכון צפוי', 'סטטוס', 'IP'
+            ));
+            
+            foreach ($leads as $lead) {
+                $solutions = json_decode($lead['solutions'], true);
+                $solutions_text = is_array($solutions) ? implode(', ', $solutions) : '';
+                
+                fputcsv($output, array(
+                    $lead['submission_date'],
+                    $lead['full_name'],
+                    $lead['phone'],
+                    $lead['email'],
+                    $lead['property_type'],
+                    $solutions_text,
+                    $lead['property_size'],
+                    $lead['monthly_bill'],
+                    $lead['city'],
+                    $lead['contact_time'],
+                    $lead['notes'],
+                    $lead['estimated_savings'],
+                    $lead['status'],
+                    $lead['ip_address']
+                ));
+            }
+            fclose($output);
+            exit;
+        }
+    }
+});
+
 
 // Main leads page
 function energi_leads_page() {
@@ -159,6 +200,7 @@ function energi_leads_page() {
                 
                 <button type="submit" class="button">חפש</button>
                 <a href="?page=energi-leads" class="button">נקה פילטרים</a>
+                <a href="?page=energi-leads&action=export_csv" class="button button-primary" style="background: #00a32a; border-color: #00a32a;">📥 ייצא ל-CSV (Excel)</a>
             </form>
         </div>
         
@@ -323,79 +365,7 @@ function energi_leads_page() {
     <?php
 }
 
-// Export page
-function energi_leads_export_page() {
-    global $wpdb;
-    
-    if (isset($_POST['export_leads'])) {
-        $table_name = $wpdb->prefix . 'energi_leads';
-        $leads = $wpdb->get_results("SELECT * FROM $table_name ORDER BY submission_date DESC", ARRAY_A);
-        
-        if (!empty($leads)) {
-            // Set headers for CSV download
-            header('Content-Type: text/csv; charset=utf-8');
-            header('Content-Disposition: attachment; filename=energi_leads_' . date('Y-m-d') . '.csv');
-            
-            // Create CSV content
-            $output = fopen('php://output', 'w');
-            
-            // Add BOM for Hebrew support in Excel
-            fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-            
-            // Headers
-            fputcsv($output, array(
-                'תאריך', 'שם מלא', 'טלפון', 'אימייל', 'סוג נכס', 'פתרונות', 
-                'גודל נכס', 'חשבון חודשי', 'עיר', 'זמן קשר', 'הערות', 
-                'חיסכון צפוי', 'סטטוס', 'IP'
-            ));
-            
-            // Data rows
-            foreach ($leads as $lead) {
-                $solutions = json_decode($lead['solutions'], true);
-                $solutions_text = is_array($solutions) ? implode(', ', $solutions) : '';
-                
-                fputcsv($output, array(
-                    $lead['submission_date'],
-                    $lead['full_name'],
-                    $lead['phone'],
-                    $lead['email'],
-                    $lead['property_type'],
-                    $solutions_text,
-                    $lead['property_size'],
-                    $lead['monthly_bill'],
-                    $lead['city'],
-                    $lead['contact_time'],
-                    $lead['notes'],
-                    $lead['estimated_savings'],
-                    $lead['status'],
-                    $lead['ip_address']
-                ));
-            }
-            
-            fclose($output);
-            exit;
-        }
-    }
-    
-    ?>
-    <div class="wrap">
-        <h1>ייצא לידים</h1>
-        
-        <div style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h2>ייצא לקובץ CSV</h2>
-            <p>ייצא את כל הלידים לקובץ Excel/CSV לשימוש חיצוני או גיבוי.</p>
-            
-            <form method="POST">
-                <p>
-                    <button type="submit" name="export_leads" class="button button-primary">
-                        ייצא את כל הלידים לקובץ CSV
-                    </button>
-                </p>
-            </form>
-        </div>
-    </div>
-    <?php
-}
+
 
 // Add dashboard widget
 add_action('wp_dashboard_setup', 'energi_leads_dashboard_widget');
