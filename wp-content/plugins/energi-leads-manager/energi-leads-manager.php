@@ -135,9 +135,50 @@ function energi_leads_page() {
         echo '<div class="notice notice-success"><p>הליד נמחק בהצלחה!</p></div>';
     }
     
-    // Get filter
+    // Get filter & sorting parameters
     $status_filter = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'all';
     $search = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+    
+    // Sort parameters
+    $allowed_sort = array(
+        'submission_date' => 'submission_date',
+        'full_name'       => 'full_name',
+        'phone'           => 'phone',
+        'city'            => 'city',
+        'status'          => 'status',
+        'estimated_savings' => 'estimated_savings'
+    );
+    
+    $orderby_param = isset($_GET['orderby']) && isset($allowed_sort[$_GET['orderby']]) ? $allowed_sort[$_GET['orderby']] : 'submission_date';
+    $order_param   = isset($_GET['order']) && strtoupper($_GET['order']) === 'ASC' ? 'ASC' : 'DESC';
+    $next_order    = $order_param === 'ASC' ? 'DESC' : 'ASC';
+    
+    // Helper function for sort links
+    $build_sort_url = function($column) use ($orderby_param, $order_param, $next_order, $status_filter, $search) {
+        $is_active = ($orderby_param === $column);
+        $new_order = $is_active ? $next_order : 'DESC';
+        $icon = $is_active ? ($order_param === 'ASC' ? ' ▲' : ' ▼') : ' ↕';
+        $url = add_query_arg(array(
+            'page'    => 'energi-leads',
+            'status'  => $status_filter,
+            'search'  => $search,
+            'orderby' => $column,
+            'order'   => $new_order
+        ), admin_url('admin.php'));
+        
+        $style = $is_active ? 'color: #0073aa; font-weight: bold;' : 'color: #333; text-decoration: none;';
+        return '<a href="' . esc_url($url) . '" style="' . $style . '">' . $icon . '</a>';
+    };
+
+    // Solution translations
+    $solution_map = array(
+        'electric_vehicle' => '🚗 רכב חשמלי',
+        'solar'            => '☀️ סולארי',
+        'battery'          => '🔋 אגירת אנרגיה',
+        'heat_pump'        => '❄️ משאבת חום',
+        'led_lighting'     => '💡 תאורת לדינג',
+        'smart_home'       => '🏠 בית חכם'
+    );
     
     // Build query
     $where_clause = "WHERE 1=1";
@@ -149,7 +190,7 @@ function energi_leads_page() {
             "%$search%", "%$search%", "%$search%", "%$search%");
     }
     
-    $leads = $wpdb->get_results("SELECT * FROM $table_name $where_clause ORDER BY submission_date DESC");
+    $leads = $wpdb->get_results("SELECT * FROM $table_name $where_clause ORDER BY $orderby_param $order_param");
     
     // Get stats
     $total_leads = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
@@ -159,7 +200,7 @@ function energi_leads_page() {
     
     ?>
     <div class="wrap">
-        <h1>ניהול לידים - Energi.co.il</h1>
+        <h1 style="display: flex; align-items: center; gap: 10px;">⚡ ניהול לידים מתקדם 2027 - Energi.co.il</h1>
         
         <!-- Stats Dashboard -->
         <div style="display: flex; gap: 20px; margin: 20px 0;">
@@ -182,11 +223,11 @@ function energi_leads_page() {
         </div>
         
         <!-- Filters -->
-        <div style="background: #fff; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <div style="background: #fff; padding: 15px; border-radius: 8px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
             <form method="GET" style="display: flex; gap: 15px; align-items: center;">
                 <input type="hidden" name="page" value="energi-leads">
                 
-                <label>סטטוס:</label>
+                <label><strong>סטטוס:</strong></label>
                 <select name="status" onchange="this.form.submit()">
                     <option value="all" <?php selected($status_filter, 'all'); ?>>הכל</option>
                     <option value="new" <?php selected($status_filter, 'new'); ?>>חדש</option>
@@ -195,30 +236,30 @@ function energi_leads_page() {
                     <option value="rejected" <?php selected($status_filter, 'rejected'); ?>>נדחה</option>
                 </select>
                 
-                <label>חיפוש:</label>
+                <label><strong>חיפוש:</strong></label>
                 <input type="text" name="search" value="<?php echo esc_attr($search); ?>" placeholder="שם, טלפון, אימייל או עיר">
                 
-                <button type="submit" class="button">חפש</button>
+                <button type="submit" class="button button-secondary">חפש</button>
                 <a href="?page=energi-leads" class="button">נקה פילטרים</a>
                 <a href="?page=energi-leads&action=export_csv" class="button button-primary" style="background: #00a32a; border-color: #00a32a;">📥 ייצא ל-CSV (Excel)</a>
             </form>
         </div>
         
-        <!-- Leads Table -->
-        <div style="background: #fff; border-radius: 8px; overflow: hidden;">
+        <!-- Leads Table 2027 -->
+        <div style="background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <table class="wp-list-table widefat fixed striped">
                 <thead>
-                    <tr>
-                        <th>תאריך</th>
-                        <th>שם</th>
-                        <th>טלפון</th>
-                        <th>אימייל</th>
-                        <th>נכס</th>
-                        <th>פתרונות</th>
-                        <th>חיסכון צפוי</th>
-                        <th>עיר</th>
-                        <th>סטטוס</th>
-                        <th>פעולות</th>
+                    <tr style="background: #f4f6f8;">
+                        <th style="font-weight: 700;">תאריך <?php echo $build_sort_url('submission_date'); ?></th>
+                        <th style="font-weight: 700;">שם <?php echo $build_sort_url('full_name'); ?></th>
+                        <th style="font-weight: 700;">טלפון / WhatsApp</th>
+                        <th style="font-weight: 700;">אימייל</th>
+                        <th style="font-weight: 700;">נכס</th>
+                        <th style="font-weight: 700;">פתרונות</th>
+                        <th style="font-weight: 700;">חיסכון צפוי <?php echo $build_sort_url('estimated_savings'); ?></th>
+                        <th style="font-weight: 700;">עיר <?php echo $build_sort_url('city'); ?></th>
+                        <th style="font-weight: 700;">סטטוס <?php echo $build_sort_url('status'); ?></th>
+                        <th style="font-weight: 700;">פעולות</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -231,13 +272,27 @@ function energi_leads_page() {
                         </tr>
                     <?php else: ?>
                         <?php foreach ($leads as $lead): ?>
+                            <?php 
+                            // Clean phone for WhatsApp
+                            $clean_phone = preg_replace('/[^0-9]/', '', $lead->phone);
+                            if (strpos($clean_phone, '0') === 0) {
+                                $wa_phone = '972' . substr($clean_phone, 1);
+                            } else {
+                                $wa_phone = $clean_phone;
+                            }
+                            ?>
                             <tr>
                                 <td><?php echo date('d/m/Y H:i', strtotime($lead->submission_date)); ?></td>
                                 <td><strong><?php echo esc_html($lead->full_name); ?></strong></td>
                                 <td>
-                                    <a href="tel:<?php echo esc_attr($lead->phone); ?>" style="color: #0073aa; text-decoration: none;">
-                                        <?php echo esc_html($lead->phone); ?>
-                                    </a>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <a href="tel:<?php echo esc_attr($lead->phone); ?>" style="color: #0073aa; text-decoration: none; font-weight: 600;">
+                                            <?php echo esc_html($lead->phone); ?>
+                                        </a>
+                                        <?php if (!empty($wa_phone)): ?>
+                                            <a href="https://wa.me/<?php echo esc_attr($wa_phone); ?>" target="_blank" title="שלח הודעת WhatsApp" style="color: #25D366; text-decoration: none; font-size: 14px;">💬</a>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                                 <td>
                                     <?php if ($lead->email): ?>
@@ -248,17 +303,22 @@ function energi_leads_page() {
                                         <span style="color: #999;">לא צוין</span>
                                     <?php endif; ?>
                                 </td>
-                                <td><?php echo esc_html($lead->property_type); ?></td>
+                                <td><?php echo esc_html($lead->property_type ?: 'לא צוין'); ?></td>
                                 <td>
                                     <?php 
                                     $solutions = json_decode($lead->solutions, true);
-                                    if (is_array($solutions)) {
-                                        echo esc_html(implode(', ', $solutions));
+                                    if (is_array($solutions) && !empty($solutions)) {
+                                        $translated = array_map(function($sol) use ($solution_map) {
+                                            return isset($solution_map[$sol]) ? $solution_map[$sol] : $sol;
+                                        }, $solutions);
+                                        echo '<span style="font-size: 11px; background: #eef2f6; padding: 2px 6px; border-radius: 4px; display: inline-block;">' . esc_html(implode(' | ', $translated)) . '</span>';
+                                    } else {
+                                        echo '<span style="color: #999;">לא צוין</span>';
                                     }
                                     ?>
                                 </td>
-                                <td><strong style="color: #00a32a;"><?php echo esc_html($lead->estimated_savings); ?></strong></td>
-                                <td><?php echo esc_html($lead->city); ?></td>
+                                <td><strong style="color: #00a32a;"><?php echo esc_html($lead->estimated_savings ?: 'לא חושב'); ?></strong></td>
+                                <td><?php echo esc_html($lead->city ?: 'לא צוין'); ?></td>
                                 <td>
                                     <?php
                                     $status_colors = array(
@@ -268,6 +328,19 @@ function energi_leads_page() {
                                         'rejected' => '#999'
                                     );
                                     $status_names = array(
+                                        'new' => 'חדש',
+                                        'contacted' => 'נוצר קשר',
+                                        'converted' => 'הומר',
+                                        'rejected' => 'נדחה'
+                                    );
+                                    $color = isset($status_colors[$lead->status]) ? $status_colors[$lead->status] : '#999';
+                                    $name = isset($status_names[$lead->status]) ? $status_names[$lead->status] : $lead->status;
+                                    ?>
+                                    <span style="background: <?php echo $color; ?>; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                                        <?php echo $name; ?>
+                                    </span>
+                                </td>
+
                                         'new' => 'חדש',
                                         'contacted' => 'נוצר קשר',
                                         'converted' => 'הומר',
